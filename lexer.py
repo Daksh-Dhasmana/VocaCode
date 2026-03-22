@@ -1,13 +1,19 @@
 import ply.lex as lex
 
 tokens = (
-    'DECL','TYPE','ID','ASSIGN','NUMBER'
+    'DECL','TYPE','ID','ASSIGN','NUMBER',
+    'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'PRINT'
 )
 
 reserved = {
     'declare':'DECL',
     'integer':'TYPE',
-    'equals':'ASSIGN'
+    'equals':'ASSIGN',
+    'plus':'PLUS',
+    'minus':'MINUS',
+    'multiply':'TIMES',
+    'divide':'DIVIDE',
+    'print':'PRINT'
 }
 
 def t_NUMBER(t):

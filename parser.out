@@ -2,70 +2,334 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Grammar
 
-Rule 0     S' -> statement
-Rule 1     statement -> DECL TYPE ID ASSIGN NUMBER
+Rule 0     S' -> program
+Rule 1     program -> statement_list
+Rule 2     statement_list -> statement_list statement
+Rule 3     statement_list -> statement
+Rule 4     statement -> DECL TYPE ID ASSIGN expression
+Rule 5     statement -> PRINT ID
+Rule 6     expression -> expression PLUS expression
+Rule 7     expression -> expression MINUS expression
+Rule 8     expression -> expression TIMES expression
+Rule 9     expression -> expression DIVIDE expression
+Rule 10    expression -> NUMBER
+Rule 11    expression -> ID
 
 Terminals, with rules where they appear
 
-ASSIGN               : 1
-DECL                 : 1
-ID                   : 1
-NUMBER               : 1
-TYPE                 : 1
+ASSIGN               : 4
+DECL                 : 4
+DIVIDE               : 9
+ID                   : 4 5 11
+MINUS                : 7
+NUMBER               : 10
+PLUS                 : 6
+PRINT                : 5
+TIMES                : 8
+TYPE                 : 4
 error                : 
 
 Nonterminals, with rules where they appear
 
-statement            : 0
+expression           : 4 6 6 7 7 8 8 9 9
+program              : 0
+statement            : 2 3
+statement_list       : 1 2
 
 Parsing method: LALR
 
 state 0
 
-    (0) S' -> . statement
-    (1) statement -> . DECL TYPE ID ASSIGN NUMBER
+    (0) S' -> . program
+    (1) program -> . statement_list
+    (2) statement_list -> . statement_list statement
+    (3) statement_list -> . statement
+    (4) statement -> . DECL TYPE ID ASSIGN expression
+    (5) statement -> . PRINT ID
 
-    DECL            shift and go to state 2
+    DECL            shift and go to state 4
+    PRINT           shift and go to state 5
 
-    statement                      shift and go to state 1
+    program                        shift and go to state 1
+    statement_list                 shift and go to state 2
+    statement                      shift and go to state 3
 
 state 1
 
-    (0) S' -> statement .
+    (0) S' -> program .
 
 
 
 state 2
 
-    (1) statement -> DECL . TYPE ID ASSIGN NUMBER
+    (1) program -> statement_list .
+    (2) statement_list -> statement_list . statement
+    (4) statement -> . DECL TYPE ID ASSIGN expression
+    (5) statement -> . PRINT ID
 
-    TYPE            shift and go to state 3
+    $end            reduce using rule 1 (program -> statement_list .)
+    DECL            shift and go to state 4
+    PRINT           shift and go to state 5
 
+    statement                      shift and go to state 6
 
 state 3
 
-    (1) statement -> DECL TYPE . ID ASSIGN NUMBER
+    (3) statement_list -> statement .
 
-    ID              shift and go to state 4
+    DECL            reduce using rule 3 (statement_list -> statement .)
+    PRINT           reduce using rule 3 (statement_list -> statement .)
+    $end            reduce using rule 3 (statement_list -> statement .)
 
 
 state 4
 
-    (1) statement -> DECL TYPE ID . ASSIGN NUMBER
+    (4) statement -> DECL . TYPE ID ASSIGN expression
 
-    ASSIGN          shift and go to state 5
+    TYPE            shift and go to state 7
 
 
 state 5
 
-    (1) statement -> DECL TYPE ID ASSIGN . NUMBER
+    (5) statement -> PRINT . ID
 
-    NUMBER          shift and go to state 6
+    ID              shift and go to state 8
 
 
 state 6
 
-    (1) statement -> DECL TYPE ID ASSIGN NUMBER .
+    (2) statement_list -> statement_list statement .
 
-    $end            reduce using rule 1 (statement -> DECL TYPE ID ASSIGN NUMBER .)
+    DECL            reduce using rule 2 (statement_list -> statement_list statement .)
+    PRINT           reduce using rule 2 (statement_list -> statement_list statement .)
+    $end            reduce using rule 2 (statement_list -> statement_list statement .)
+
+
+state 7
+
+    (4) statement -> DECL TYPE . ID ASSIGN expression
+
+    ID              shift and go to state 9
+
+
+state 8
+
+    (5) statement -> PRINT ID .
+
+    DECL            reduce using rule 5 (statement -> PRINT ID .)
+    PRINT           reduce using rule 5 (statement -> PRINT ID .)
+    $end            reduce using rule 5 (statement -> PRINT ID .)
+
+
+state 9
+
+    (4) statement -> DECL TYPE ID . ASSIGN expression
+
+    ASSIGN          shift and go to state 10
+
+
+state 10
+
+    (4) statement -> DECL TYPE ID ASSIGN . expression
+    (6) expression -> . expression PLUS expression
+    (7) expression -> . expression MINUS expression
+    (8) expression -> . expression TIMES expression
+    (9) expression -> . expression DIVIDE expression
+    (10) expression -> . NUMBER
+    (11) expression -> . ID
+
+    NUMBER          shift and go to state 13
+    ID              shift and go to state 11
+
+    expression                     shift and go to state 12
+
+state 11
+
+    (11) expression -> ID .
+
+    PLUS            reduce using rule 11 (expression -> ID .)
+    MINUS           reduce using rule 11 (expression -> ID .)
+    TIMES           reduce using rule 11 (expression -> ID .)
+    DIVIDE          reduce using rule 11 (expression -> ID .)
+    DECL            reduce using rule 11 (expression -> ID .)
+    PRINT           reduce using rule 11 (expression -> ID .)
+    $end            reduce using rule 11 (expression -> ID .)
+
+
+state 12
+
+    (4) statement -> DECL TYPE ID ASSIGN expression .
+    (6) expression -> expression . PLUS expression
+    (7) expression -> expression . MINUS expression
+    (8) expression -> expression . TIMES expression
+    (9) expression -> expression . DIVIDE expression
+
+    DECL            reduce using rule 4 (statement -> DECL TYPE ID ASSIGN expression .)
+    PRINT           reduce using rule 4 (statement -> DECL TYPE ID ASSIGN expression .)
+    $end            reduce using rule 4 (statement -> DECL TYPE ID ASSIGN expression .)
+    PLUS            shift and go to state 14
+    MINUS           shift and go to state 15
+    TIMES           shift and go to state 16
+    DIVIDE          shift and go to state 17
+
+
+state 13
+
+    (10) expression -> NUMBER .
+
+    PLUS            reduce using rule 10 (expression -> NUMBER .)
+    MINUS           reduce using rule 10 (expression -> NUMBER .)
+    TIMES           reduce using rule 10 (expression -> NUMBER .)
+    DIVIDE          reduce using rule 10 (expression -> NUMBER .)
+    DECL            reduce using rule 10 (expression -> NUMBER .)
+    PRINT           reduce using rule 10 (expression -> NUMBER .)
+    $end            reduce using rule 10 (expression -> NUMBER .)
+
+
+state 14
+
+    (6) expression -> expression PLUS . expression
+    (6) expression -> . expression PLUS expression
+    (7) expression -> . expression MINUS expression
+    (8) expression -> . expression TIMES expression
+    (9) expression -> . expression DIVIDE expression
+    (10) expression -> . NUMBER
+    (11) expression -> . ID
+
+    NUMBER          shift and go to state 13
+    ID              shift and go to state 11
+
+    expression                     shift and go to state 18
+
+state 15
+
+    (7) expression -> expression MINUS . expression
+    (6) expression -> . expression PLUS expression
+    (7) expression -> . expression MINUS expression
+    (8) expression -> . expression TIMES expression
+    (9) expression -> . expression DIVIDE expression
+    (10) expression -> . NUMBER
+    (11) expression -> . ID
+
+    NUMBER          shift and go to state 13
+    ID              shift and go to state 11
+
+    expression                     shift and go to state 19
+
+state 16
+
+    (8) expression -> expression TIMES . expression
+    (6) expression -> . expression PLUS expression
+    (7) expression -> . expression MINUS expression
+    (8) expression -> . expression TIMES expression
+    (9) expression -> . expression DIVIDE expression
+    (10) expression -> . NUMBER
+    (11) expression -> . ID
+
+    NUMBER          shift and go to state 13
+    ID              shift and go to state 11
+
+    expression                     shift and go to state 20
+
+state 17
+
+    (9) expression -> expression DIVIDE . expression
+    (6) expression -> . expression PLUS expression
+    (7) expression -> . expression MINUS expression
+    (8) expression -> . expression TIMES expression
+    (9) expression -> . expression DIVIDE expression
+    (10) expression -> . NUMBER
+    (11) expression -> . ID
+
+    NUMBER          shift and go to state 13
+    ID              shift and go to state 11
+
+    expression                     shift and go to state 21
+
+state 18
+
+    (6) expression -> expression PLUS expression .
+    (6) expression -> expression . PLUS expression
+    (7) expression -> expression . MINUS expression
+    (8) expression -> expression . TIMES expression
+    (9) expression -> expression . DIVIDE expression
+
+    PLUS            reduce using rule 6 (expression -> expression PLUS expression .)
+    MINUS           reduce using rule 6 (expression -> expression PLUS expression .)
+    DECL            reduce using rule 6 (expression -> expression PLUS expression .)
+    PRINT           reduce using rule 6 (expression -> expression PLUS expression .)
+    $end            reduce using rule 6 (expression -> expression PLUS expression .)
+    TIMES           shift and go to state 16
+    DIVIDE          shift and go to state 17
+
+  ! TIMES           [ reduce using rule 6 (expression -> expression PLUS expression .) ]
+  ! DIVIDE          [ reduce using rule 6 (expression -> expression PLUS expression .) ]
+  ! PLUS            [ shift and go to state 14 ]
+  ! MINUS           [ shift and go to state 15 ]
+
+
+state 19
+
+    (7) expression -> expression MINUS expression .
+    (6) expression -> expression . PLUS expression
+    (7) expression -> expression . MINUS expression
+    (8) expression -> expression . TIMES expression
+    (9) expression -> expression . DIVIDE expression
+
+    PLUS            reduce using rule 7 (expression -> expression MINUS expression .)
+    MINUS           reduce using rule 7 (expression -> expression MINUS expression .)
+    DECL            reduce using rule 7 (expression -> expression MINUS expression .)
+    PRINT           reduce using rule 7 (expression -> expression MINUS expression .)
+    $end            reduce using rule 7 (expression -> expression MINUS expression .)
+    TIMES           shift and go to state 16
+    DIVIDE          shift and go to state 17
+
+  ! TIMES           [ reduce using rule 7 (expression -> expression MINUS expression .) ]
+  ! DIVIDE          [ reduce using rule 7 (expression -> expression MINUS expression .) ]
+  ! PLUS            [ shift and go to state 14 ]
+  ! MINUS           [ shift and go to state 15 ]
+
+
+state 20
+
+    (8) expression -> expression TIMES expression .
+    (6) expression -> expression . PLUS expression
+    (7) expression -> expression . MINUS expression
+    (8) expression -> expression . TIMES expression
+    (9) expression -> expression . DIVIDE expression
+
+    PLUS            reduce using rule 8 (expression -> expression TIMES expression .)
+    MINUS           reduce using rule 8 (expression -> expression TIMES expression .)
+    TIMES           reduce using rule 8 (expression -> expression TIMES expression .)
+    DIVIDE          reduce using rule 8 (expression -> expression TIMES expression .)
+    DECL            reduce using rule 8 (expression -> expression TIMES expression .)
+    PRINT           reduce using rule 8 (expression -> expression TIMES expression .)
+    $end            reduce using rule 8 (expression -> expression TIMES expression .)
+
+  ! PLUS            [ shift and go to state 14 ]
+  ! MINUS           [ shift and go to state 15 ]
+  ! TIMES           [ shift and go to state 16 ]
+  ! DIVIDE          [ shift and go to state 17 ]
+
+
+state 21
+
+    (9) expression -> expression DIVIDE expression .
+    (6) expression -> expression . PLUS expression
+    (7) expression -> expression . MINUS expression
+    (8) expression -> expression . TIMES expression
+    (9) expression -> expression . DIVIDE expression
+
+    PLUS            reduce using rule 9 (expression -> expression DIVIDE expression .)
+    MINUS           reduce using rule 9 (expression -> expression DIVIDE expression .)
+    TIMES           reduce using rule 9 (expression -> expression DIVIDE expression .)
+    DIVIDE          reduce using rule 9 (expression -> expression DIVIDE expression .)
+    DECL            reduce using rule 9 (expression -> expression DIVIDE expression .)
+    PRINT           reduce using rule 9 (expression -> expression DIVIDE expression .)
+    $end            reduce using rule 9 (expression -> expression DIVIDE expression .)
+
+  ! PLUS            [ shift and go to state 14 ]
+  ! MINUS           [ shift and go to state 15 ]
+  ! TIMES           [ shift and go to state 16 ]
+  ! DIVIDE          [ shift and go to state 17 ]
 

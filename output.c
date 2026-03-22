@@ -1,1 +1,1 @@
-int b = 10;
+printf("%d\n", sum);

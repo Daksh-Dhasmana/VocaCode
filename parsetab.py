@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'ASSIGN DECL ID NUMBER TYPEstatement : DECL TYPE ID ASSIGN NUMBER'
+_lr_signature = 'leftPLUSMINUSleftTIMESDIVIDEASSIGN DECL DIVIDE ID MINUS NUMBER PLUS PRINT TIMES TYPEprogram : statement_liststatement_list : statement_list statementstatement_list : statementstatement : DECL TYPE ID ASSIGN expressionstatement : PRINT IDexpression : expression PLUS expression\n                  | expression MINUS expression\n                  | expression TIMES expression\n                  | expression DIVIDE expressionexpression : NUMBERexpression : ID'
     
-_lr_action_items = {'DECL':([0,],[2,]),'$end':([1,6,],[0,-1,]),'TYPE':([2,],[3,]),'ID':([3,],[4,]),'ASSIGN':([4,],[5,]),'NUMBER':([5,],[6,]),}
+_lr_action_items = {'DECL':([0,2,3,6,8,11,12,13,18,19,20,21,],[4,4,-3,-2,-5,-11,-4,-10,-6,-7,-8,-9,]),'PRINT':([0,2,3,6,8,11,12,13,18,19,20,21,],[5,5,-3,-2,-5,-11,-4,-10,-6,-7,-8,-9,]),'$end':([1,2,3,6,8,11,12,13,18,19,20,21,],[0,-1,-3,-2,-5,-11,-4,-10,-6,-7,-8,-9,]),'TYPE':([4,],[7,]),'ID':([5,7,10,14,15,16,17,],[8,9,11,11,11,11,11,]),'ASSIGN':([9,],[10,]),'NUMBER':([10,14,15,16,17,],[13,13,13,13,13,]),'PLUS':([11,12,13,18,19,20,21,],[-11,14,-10,-6,-7,-8,-9,]),'MINUS':([11,12,13,18,19,20,21,],[-11,15,-10,-6,-7,-8,-9,]),'TIMES':([11,12,13,18,19,20,21,],[-11,16,-10,16,16,-8,-9,]),'DIVIDE':([11,12,13,18,19,20,21,],[-11,17,-10,17,17,-8,-9,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'statement':([0,],[1,]),}
+_lr_goto_items = {'program':([0,],[1,]),'statement_list':([0,],[2,]),'statement':([0,2,],[3,6,]),'expression':([10,14,15,16,17,],[12,18,19,20,21,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,6 +26,16 @@ for _k, _v in _lr_goto_items.items():
        _lr_goto[_x][_k] = _y
 del _lr_goto_items
 _lr_productions = [
-  ("S' -> statement","S'",1,None,None,None),
-  ('statement -> DECL TYPE ID ASSIGN NUMBER','statement',5,'p_statement','parser.py',5),
+  ("S' -> program","S'",1,None,None,None),
+  ('program -> statement_list','program',1,'p_program','parser.py',10),
+  ('statement_list -> statement_list statement','statement_list',2,'p_statement_list_multiple','parser.py',14),
+  ('statement_list -> statement','statement_list',1,'p_statement_list_single','parser.py',19),
+  ('statement -> DECL TYPE ID ASSIGN expression','statement',5,'p_statement_assign','parser.py',23),
+  ('statement -> PRINT ID','statement',2,'p_statement_print','parser.py',27),
+  ('expression -> expression PLUS expression','expression',3,'p_expression_binop','parser.py',31),
+  ('expression -> expression MINUS expression','expression',3,'p_expression_binop','parser.py',32),
+  ('expression -> expression TIMES expression','expression',3,'p_expression_binop','parser.py',33),
+  ('expression -> expression DIVIDE expression','expression',3,'p_expression_binop','parser.py',34),
+  ('expression -> NUMBER','expression',1,'p_expression_number','parser.py',38),
+  ('expression -> ID','expression',1,'p_expression_id','parser.py',42),
 ]

@@ -1,7 +1,7 @@
 from normalizer import normalize
 from speech_to_text import get_voice
 from lexer import lexer
-from parser import parser
+from parser import parser, print_tree
 from intermediate import generate_ir
 from codegen import generate_c
 
@@ -23,7 +23,9 @@ while True:
 
 tree = parser.parse(text)
 
-print("\nParse Tree:", tree)
+print("\nParse Tree:")
+if tree:
+    print_tree(tree)
 
 if tree is None:
     print("Parsing failed. Your sentence does not match grammar.")
