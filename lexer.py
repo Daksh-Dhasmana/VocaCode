@@ -9,6 +9,7 @@ reserved = {
     'integer':'TYPE',
     'equals':'ASSIGN'
 }
+
 def t_NUMBER(t):
     r'\d+'
     return t
