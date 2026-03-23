@@ -10,7 +10,7 @@ def generate_c(ir):
         line = line.strip()
         if not line:
             continue
-
+        
         if line.startswith("print "):
             var = line.split()[1]
             c_lines.append(f'    printf("%d\\n", {var});')
