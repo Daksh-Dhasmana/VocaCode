@@ -13,7 +13,6 @@ def generate_ir(tree):
     if tree[0] == 'program':
         return "\n".join(generate_ir(stmt) for stmt in tree[1])
 
-
     elif tree[0] == 'assign':
         expr_code, result = generate_ir(tree[2])
         return expr_code + f"\n{tree[1]} = {result}"
